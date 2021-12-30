@@ -9,8 +9,9 @@ const $messagetemplates = document.querySelector('#message-templa').innerHTML
 const $locationmessagetemplates = document.querySelector('#location-message-templa').innerHTML
 const $sidebartemplate = document.querySelector('#sidebar-template').innerHTML
 const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
-console.log(username, room)
 
+
+console.log(username, room)
 
 socket.on('message', (message) => {
     console.log(message)
@@ -42,10 +43,7 @@ socket.on('roomdata', ({ room, users }) => {
 
 $messageform.addEventListener('submit', (e) => {
     e.preventDefault()
-
     $messageformbuttton.setAttribute('disabled', 'disabled')
-
-
 
     const message = e.target.elements.message.value
     socket.emit('sendMessage', message, (msg) => {
@@ -57,7 +55,6 @@ $messageform.addEventListener('submit', (e) => {
 })
 
 $sendlocationbuttton.addEventListener('click', () => {
-
     if (!navigator.geolocation) {
         return alert('Browser don\'t support the navigation geolation')
     }
@@ -65,7 +62,6 @@ $sendlocationbuttton.addEventListener('click', () => {
     $sendlocationbuttton.setAttribute('disabled', 'disabed')
 
     navigator.geolocation.getCurrentPosition((position) => {
-
         socket.emit('sendLocation', {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
@@ -83,13 +79,3 @@ socket.emit('join', { username, room }, (error) => {
         alert(error)
     }
 })
-
-
-// socket.on('count update', (count) => {
-//     console.log('count has been update', count)
-// })
-
-// document.querySelector('#increment').addEventListener('click', () => {
-//     console.log('Clicked')
-//     socket.emit('increment')
-// })
